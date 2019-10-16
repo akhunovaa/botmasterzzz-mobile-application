@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment {
         MainContext mainContext = MainContext.INSTANCE;
         Settings settings = mainContext.getSettings();
         String accessToken = settings.retreiveAccessToken();
-        if(accessToken.equals("accessToken")){
+        if(accessToken.equals("empty")){
             content = R.layout.login_activity;
             view = inflater.inflate(content, container, false);
             view.findViewById(R.id.button).setOnClickListener(new LoginButtonClickListener());
@@ -197,14 +197,23 @@ public class LoginFragment extends Fragment {
                     }catch (JSONException e){
                         result = e.getLocalizedMessage();
                         requestResult = false;
+                        MainContext mainContext = MainContext.INSTANCE;
+                        Settings settings = mainContext.getSettings();
+                        settings.saveAccessToken("empty");
                     }
                 } else {
                     result = "Did not work!";
                     requestResult = false;
+                    MainContext mainContext = MainContext.INSTANCE;
+                    Settings settings = mainContext.getSettings();
+                    settings.saveAccessToken("empty");
                 }
             } catch (Exception e) {
                 Log.d("InputStream", e.getLocalizedMessage());
                 requestResult = false;
+                MainContext mainContext = MainContext.INSTANCE;
+                Settings settings = mainContext.getSettings();
+                settings.saveAccessToken("empty");
             }
             return requestResult;
         }
@@ -334,17 +343,17 @@ public class LoginFragment extends Fragment {
                         result = e.getLocalizedMessage();
                         requestResult = false;
                         settings = mainContext.getSettings();
-                        settings.saveAccessToken("accessToken");
+                        settings.saveAccessToken("empty");
                     }
                 } else {
                     settings = mainContext.getSettings();
-                    settings.saveAccessToken("accessToken");
+                    settings.saveAccessToken("empty");
                     result = "Did not work!";
                     requestResult = false;
                 }
             } catch (Exception e) {
                 settings = mainContext.getSettings();
-                settings.saveAccessToken("accessToken");
+                settings.saveAccessToken("empty");
                 Log.d("InputStream", e.getLocalizedMessage());
                 requestResult = false;
             }
