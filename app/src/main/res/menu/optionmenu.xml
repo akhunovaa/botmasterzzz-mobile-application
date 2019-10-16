@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_list"
+        android:title="@string/filter_title"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_scanner"
+        android:icon="@drawable/ic_pause"
+        android:title="@string/scanner_pause"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_wifi_band"
+        android:icon="@drawable/ic_leak_add"
+        android:title="@string/wifi_band_title"
+        app:showAsAction="ifRoom"/>
+
+</menu>

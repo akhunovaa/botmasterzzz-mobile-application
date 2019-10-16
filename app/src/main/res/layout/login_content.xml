@@ -1,0 +1,17 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="@bool/keep_screen_on_default"
+    android:layout_below="@id/toolbar">
+
+    <Button
+        android:id="@+id/button_export"
+        android:layout_width="match_parent"
+        android:layout_height="145dp"
+        android:text="@string/data_export"
+        android:textAlignment="center" />
+
+</LinearLayout>

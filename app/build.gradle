@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.botmasterzzz.mobile.application"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode
+        versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    useLibrary 'org.apache.http.legacy'
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            applicationIdSuffix ".BETA"
+            versionNameSuffix "-BETA"
+            minifyEnabled false
+            shrinkResources false
+            debuggable true
+            testCoverageEnabled false
+        }
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources true
+            all {
+                testLogging {
+                    events "passed", "skipped", "failed", "standardOut", "standardError"
+                    outputs.upToDateWhen {false}
+                    showStandardStreams = true
+                }
+            }
+        }
+    }
+    lintOptions {
+        disable "GoogleAppIndexingWarning"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    // Compile Build Dependencies
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.media:media:1.0.1'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    // Unit Test Dependencies
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.powermock:powermock-module-junit4:2.0.2'
+    testImplementation 'org.powermock:powermock-api-mockito2:2.0.2'
+    testImplementation 'com.googlecode.junit-toolbox:junit-toolbox:2.4'
+    testImplementation 'org.robolectric:robolectric:4.3'
+    testImplementation 'androidx.test.ext:junit:1.1.1'
+    // Android Test Dependencies
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+}

@@ -1,0 +1,177 @@
+<resources>
+
+    <string name="login_url">https://rusberbank.ru/auth/login</string>
+    <string name="app_name">BMZzz WiFi</string>
+    <string name="app_full_name" translatable="false">"BMZzz WiFi Application"</string>
+    <string name="app_company_name" translatable="false">"BMZzz Software Development"</string>
+    <string name="app_copyright">"Copyright \u00A9 2019 \u002D "</string>
+    <string name="app_url" translatable="false">"https://rusberbank.ru"</string>
+
+    <string name="scan_speed_title">"Интервал сканирования"</string>
+    <string name="scan_speed_summary">"%s секунд между сканированиями"</string>
+    <string name="scan_speed_key" translatable="false">"scan_speed"</string>
+    <string name="scan_speed_default" translatable="false">"5"</string>
+
+    <string name="graph_maximum_y_title">"Максимальная мощность сигнала"</string>
+    <string name="graph_maximum_y_summary" translatable="false">"%s"</string>
+    <string name="graph_maximum_y_key" translatable="false">"graph_maximum_y"</string>
+    <string name="graph_maximum_y_default" translatable="false">"2"</string>
+
+    <string name="wifi_band_key" translatable="false">"wifi_band"</string>
+
+    <string name="wifi_band_title" translatable="false">"2.4/5 GHz"</string>
+    <string name="wifi_band_2ghz" translatable="false">"2.4 GHz"</string>
+    <string name="wifi_band_5ghz" translatable="false">"5 GHz"</string>
+
+    <string name="country_code_title">"Страна"</string>
+    <string name="country_code_summary" translatable="false">"%s"</string>
+    <string name="country_code_key" translatable="false">"country_code"</string>
+
+    <string name="language_title">"Язык"</string>
+    <string name="language_summary" translatable="false">"%s"</string>
+    <string name="language_key" translatable="false">"language"</string>
+
+
+    <string name="sort_by_title">"Сортировать точки доступа по"</string>
+    <string name="sort_by_summary" translatable="false">"%s"</string>
+    <string name="sort_by_key" translatable="false">"sort_by"</string>
+    <string name="sort_by_default" translatable="false">"0"</string>
+    <string name="sort_by_signal_strength">"Сила сигнала"</string>
+    <string name="sort_by_ssid" translatable="false">"SSID"</string>
+    <string name="sort_by_channel">"Канал"</string>
+
+
+    <string name="group_by_title">"Группировать точки доступа по"</string>
+    <string name="group_by_summary" translatable="false">"%s"</string>
+    <string name="group_by_key" translatable="false">"group_by"</string>
+    <string name="group_by_default" translatable="false">"0"</string>
+    <string name="group_by_none">"Без группировки"</string>
+    <string name="group_by_ssid" translatable="false">"SSID"</string>
+    <string name="group_by_channel">"Канал"</string>
+
+    <string name="channel_rating_best">"Лучшие каналы:"</string>
+    <string name="channel_rating_best_none">"Ничего"</string>
+    <string name="channel_rating_best_alternative">", попробуйте альтернативный WiFi диапазон"</string>
+    <string name="channel_rating_heading_rating">"Оценка каналов"</string>
+    <string name="channel_rating_heading_number">"Номер канала"</string>
+    <string name="channel_rating_heading_count">"Число точек доступа"</string>
+    <string name="channel_short_name">"CH"</string>
+
+    <string name="ap_view_title">"Точка доступа"</string>
+    <string name="ap_view_summary" translatable="false">"%s"</string>
+    <string name="ap_view_key" translatable="false">"view"</string>
+    <string name="ap_view_default" translatable="false">"0"</string>
+    <string name="ap_view_complete">"Полный"</string>
+    <string name="ap_view_compact">"Компактный"</string>
+
+    <string name="connection_view_summary" translatable="false">"%s"</string>
+    <string name="connection_view_key" translatable="false">"connection"</string>
+    <string name="connection_view_default" translatable="false">"0"</string>
+    <string name="connection_view_title">"Дисплей соединение"</string>
+    <string name="connection_view_complete">"Полный"</string>
+    <string name="connection_view_compact">"Компактный"</string>
+    <string name="connection_view_hide">"Скрыть"</string>
+
+    <string name="channel_graph_legend_summary" translatable="false">"%s"</string>
+    <string name="channel_graph_legend_key" translatable="false">"channel_graph_legend"</string>
+    <string name="channel_graph_legend_default" translatable="false">"2"</string>
+    <string name="channel_graph_legend_title">"Показать легенду графика каналa"</string>
+    <string name="time_graph_legend_title">"Показать легенду графика времени"</string>
+    <string name="graph_legend_left">"Слева"</string>
+    <string name="graph_legend_right">"Справа"</string>
+    <string name="graph_legend_hide">"Скрыть"</string>
+
+    <string name="time_graph_legend_summary" translatable="false">"%s"</string>
+    <string name="time_graph_legend_key" translatable="false">"time_graph_legend"</string>
+    <string name="time_graph_legend_default" translatable="false">"0"</string>
+
+
+    <string name="wifi_off_on_exit_title">"WiFi выключен при выходе"</string>
+    <string name="wifi_off_on_exit_key" translatable="false">"wifi_off_on_exit"</string>
+    <bool name="wifi_off_on_exit_default" translatable="false">false</bool>
+
+    <string name="keep_screen_on_title">"Экран всегда включен"</string>
+    <string name="keep_screen_on_key" translatable="false">"keep_screen_on"</string>
+    <bool name="keep_screen_on_default" translatable="false">false</bool>
+
+    <string name="theme_summary" translatable="false">"%s"</string>
+    <string name="theme_key" translatable="false">"theme"</string>
+    <string name="theme_default" translatable="false">"0"</string>
+    <string name="theme_title">"Цветовая тема"</string>
+    <string name="theme_dark">"Темная"</string>
+    <string name="theme_light">"Светлая"</string>
+    <string name="theme_system">"Система"</string>
+
+    <string name="selected_menu_key" translatable="false">"selected_menu"</string>
+
+    <string name="filter_title">"Фильтр"</string>
+    <string name="filter_close">"Закрыть"</string>
+    <string name="filter_reset">"Сбросить"</string>
+    <string name="filter_apply">"Применить"</string>
+    <string name="filter_ssid_title" translatable="false">"SSID"</string>
+    <string name="filter_ssid_key" translatable="false">"filter_ssid"</string>
+    <string name="filter_ssid_hint" translatable="false">"ssid SSID"</string>
+    <string name="filter_wifi_band_title">"WiFi диапазон"</string>
+    <string name="filter_wifi_band_key" translatable="false">"filter_wifi_band"</string>
+    <string name="filter_strength_title">"Мощность сигнала"</string>
+    <string name="filter_strength_key" translatable="false">"filter_strength"</string>
+    <string name="filter_security_title">"Безопасность"</string>
+    <string name="filter_security_key" translatable="false">"filter_security"</string>
+
+    <string name="access_token_key" translatable="false">"access_token"</string>
+
+    <string name="action_access_points">"Точки доступа"</string>
+    <string name="action_export">"Экспортировать"</string>
+
+    <string name="action_settings">"Настройки"</string>
+    <string name="action_login">"Экспортировать"</string>
+    <string name="action_about">"О Программе"</string>
+
+    <string name="navigation_drawer_open">"Открыть панель навигации"</string>
+    <string name="navigation_drawer_close">"Закрыть панель навигации"</string>
+    <string name="scanner_message">"Сканирование &#8230;"</string>
+    <string name="scanner_pause">"Приостановить"</string>
+    <string name="scanner_play">"Воспроизвести"</string>
+
+    <string name="no_data_url" translatable="false">"https://rusberbank.ru"</string>
+    <string name="wifi_channels_list_url" translatable="false">"https://en.wikipedia.org/wiki/List_of_WLAN_channels"</string>
+
+    <string name="no_data">"Нет данных"</string>
+    <string name="no_data_msg">"Данные отсутствуют"</string>
+    <string name="permission_msg">"Начиная с Android Marshmallow, разрешения на размещение необходимы для выполнения сканирования WiFi. Вам будет предложено включить службы определения местоположения / разрешения. Поскольку это приложение не требует доступа в Интернет, вы можете быть уверены, что это приложение не сможет передать ваше местоположение!"</string>
+    <string name="location_msg">"Приложение может получать сведения о вашем местоположении от GPS-датчика или сетевых источников, таких как вышки сотовой связи и точки доступа Wi-Fi. Необходимо включить соответствующие параметры на телефоне и разрешить приложению использовать геоданные. Может увеличиться расход заряда батареи."</string>
+    <string name="export_not_available">"Экспорт не доступен"</string>
+
+    <string name="mc_flag" translatable="false">"802.11mc"</string>
+
+    <string name="graph_channel_axis_x">"WiFi каналы"</string>
+    <string name="graph_time_axis_x">"Кол-во сканирований"</string>
+
+    <string name="experimental_title" translatable="false">"Experimental"</string>
+    <string name="experimental_key" translatable="false">"experimental_key"</string>
+
+    <string name="about_description_title">"Описание:"</string>
+    <string name="about_description_text">"Анализ WiFi сетей и сбор данных для Android"</string>
+    <string name="about_contributor_title">"Авторы"</string>
+    <string name="about_write_review">"Обратная связь"</string>
+
+    <string name="wifi_throttle_disabled_title" translatable="false">"Disable WiFi scan throttling"</string>
+    <string name="wifi_throttle_disabled_key" translatable="false">"wifi_throttle_disabled_key"</string>
+    <bool name="wifi_throttle_disabled_default" translatable="false">false</bool>
+
+    <string name="security_none">"Нет"</string>
+    <string name="security_wps" translatable="false">"WPS"</string>
+    <string name="security_wep" translatable="false">"WEP"</string>
+    <string name="security_wpa" translatable="false">"WPA"</string>
+    <string name="security_wpa2" translatable="false">"WPA2"</string>
+
+    <string name="password_text">"Пароль"</string>
+    <string name="auth_text">"Авторизоваться"</string>
+    <string name="reg_text">"Зарегистрироваться"</string>
+    <string name="link"><a href="https://rusberbank.ru/signup">Нет аккаунта? Зарегистрироваться!</a></string>
+    <string name="login_attention_text">"Уже зарегистрированы? Авторизоваться!"</string>
+    <string name="login_text">"Логин/Email"</string>
+
+    <string name="auth0_domain">"https://rusberbank.ru/signup"</string>
+    <string name="data_export">"Экспортировать"</string>
+</resources>
