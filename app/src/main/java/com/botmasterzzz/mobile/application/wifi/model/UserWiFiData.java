@@ -34,7 +34,7 @@ public class UserWiFiData {
     @SerializedName("end_frequency")
     private int endFrequency;
 
-    @SerializedName("wifi_data")
+    @SerializedName("is80211mc")
     private boolean is80211mc;
 
     public String getSsid() {
