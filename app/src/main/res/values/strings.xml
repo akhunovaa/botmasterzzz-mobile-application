@@ -174,4 +174,5 @@
 
     <string name="auth0_domain">"https://rusberbank.ru/signup"</string>
     <string name="data_export">"Экспортировать"</string>
+    <string name="logout">"Выйти"</string>
 </resources>

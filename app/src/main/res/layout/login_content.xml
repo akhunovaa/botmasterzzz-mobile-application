@@ -14,4 +14,11 @@
         android:text="@string/data_export"
         android:textAlignment="center" />
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/logout"
+        android:textAlignment="center" />
+
 </LinearLayout>

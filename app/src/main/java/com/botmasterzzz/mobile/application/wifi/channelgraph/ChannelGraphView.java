@@ -9,7 +9,6 @@ import androidx.core.util.Pair;
 import com.botmasterzzz.mobile.application.Configuration;
 import com.botmasterzzz.mobile.application.MainContext;
 
-import com.botmasterzzz.mobile.application.R;
 import com.botmasterzzz.mobile.application.settings.Settings;
 import com.botmasterzzz.mobile.application.settings.ThemeStyle;
 import com.botmasterzzz.mobile.application.wifi.band.WiFiBand;

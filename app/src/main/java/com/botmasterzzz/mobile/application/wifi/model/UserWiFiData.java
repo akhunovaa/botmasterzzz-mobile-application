@@ -2,6 +2,8 @@ package com.botmasterzzz.mobile.application.wifi.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.sql.Timestamp;
+
 public class UserWiFiData {
 
     @SerializedName("ssid")
@@ -36,6 +38,9 @@ public class UserWiFiData {
 
     @SerializedName("is80211mc")
     private boolean is80211mc;
+
+    @SerializedName("created_time")
+    private Timestamp createdTime;
 
     public String getSsid() {
         return ssid;
@@ -125,6 +130,14 @@ public class UserWiFiData {
         this.is80211mc = is80211mc;
     }
 
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
+    }
+
     @Override
     public String toString() {
         return "UserWiFiData{" +
@@ -139,6 +152,7 @@ public class UserWiFiData {
                 ", primaryFrequency=" + primaryFrequency +
                 ", endFrequency=" + endFrequency +
                 ", is80211mc=" + is80211mc +
+                ", createdTime=" + createdTime +
                 '}';
     }
 }

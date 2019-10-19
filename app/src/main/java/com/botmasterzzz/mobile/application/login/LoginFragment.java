@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class LoginFragment extends Fragment {
@@ -67,6 +68,8 @@ public class LoginFragment extends Fragment {
             content = R.layout.login_content;
             view = inflater.inflate(content, container, false);
             view.findViewById(R.id.button_export).setOnClickListener(new ExportButtonClickListener());
+            view.findViewById(R.id.logout).setOnClickListener(new LogoutButtonClickListener());
+
         }
         this.view = view;
         return view;
@@ -80,7 +83,10 @@ public class LoginFragment extends Fragment {
             String password = pass.getText().toString();
             UserUtil.saveUsernameAndPassword(getActivity(), username, password);
             Toast.makeText(view.getContext(), "Успешная авторизация", Toast.LENGTH_LONG).show();
-
+            this.view.setVisibility(View.GONE);
+            MainContext mainContext = MainContext.INSTANCE;
+            mainContext.getFilterAdapter().reset();
+            mainContext.getMainActivity().update();
         } else {
             UserUtil.saveUsernameAndPassword(getActivity(), null, null);
             UserUtil.setUserLoggedIn(getActivity(), false);
@@ -92,6 +98,19 @@ public class LoginFragment extends Fragment {
     private void export(Boolean result) {
         if(result) {
             Toast.makeText(view.getContext(), "Данные успешно экспортированы", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(view.getContext(), "Ошибка. Повторите авторизоваться заново... Мы уже работаем над этим.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+   private void logout(Boolean result) {
+       UserUtil.logout(getActivity());
+        if(result) {
+            Toast.makeText(view.getContext(), "Вы успешно покинули сеанс", Toast.LENGTH_LONG).show();
+            this.view.setVisibility(View.GONE);
+            MainContext mainContext = MainContext.INSTANCE;
+            mainContext.getFilterAdapter().reset();
+            mainContext.getMainActivity().update();
         } else {
             Toast.makeText(view.getContext(), "Ошибка. Повторите попытку позднее... Мы уже работаем над этим.", Toast.LENGTH_LONG).show();
         }
@@ -119,6 +138,11 @@ public class LoginFragment extends Fragment {
         exportDataTask.execute("s");
     }
 
+    private void tryLogout(View view) {
+        LogoutTask logoutTask = new LogoutTask();
+        logoutTask.execute("s");
+    }
+
     private class LoginButtonClickListener implements View.OnClickListener {
 
         @Override
@@ -139,6 +163,19 @@ public class LoginFragment extends Fragment {
                 tryExport(view);
             try {
                 Toast.makeText(view.getContext(), "Экспорт данных", Toast.LENGTH_LONG).show();
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(view.getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class LogoutButtonClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+                tryLogout(view);
+            try {
+                Toast.makeText(view.getContext(), "Выход из сеанса", Toast.LENGTH_LONG).show();
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(view.getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
@@ -271,6 +308,7 @@ public class LoginFragment extends Fragment {
                 userWiFiData.setPrimaryFrequency(wiFiDetail.getWiFiSignal().getPrimaryFrequency());
                 userWiFiData.setCenterFrequency(wiFiDetail.getWiFiSignal().getFrequencyStart());
                 userWiFiData.setEndFrequency(wiFiDetail.getWiFiSignal().getFrequencyEnd());
+                userWiFiData.setCreatedTime(new Timestamp(System.currentTimeMillis()));
                 userDevice.addUserWifiData(userWiFiData);
             }
             Gson gson = new Gson();
@@ -378,6 +416,22 @@ public class LoginFragment extends Fragment {
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             export(result);
+        }
+    }
+
+    public class LogoutTask extends AsyncTask<String, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(String... params) {
+            MainContext mainContext = MainContext.INSTANCE;
+            Settings settings = mainContext.getSettings();
+            settings.saveAccessToken("empty");
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            logout(result);
         }
     }
 
