@@ -7,6 +7,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.botmasterzzz.mobile.application.MainContext;
 import com.botmasterzzz.mobile.application.R;
 import com.botmasterzzz.mobile.application.settings.Settings;
 import com.botmasterzzz.mobile.application.wifi.model.UserDevice;
+import com.botmasterzzz.mobile.application.wifi.model.UserDeviceTest;
 import com.botmasterzzz.mobile.application.wifi.model.UserWiFiData;
 import com.botmasterzzz.mobile.application.wifi.model.WiFiDetail;
 import com.botmasterzzz.mobile.util.UserUtil;
@@ -54,10 +56,12 @@ public class LoginFragment extends Fragment {
     private View view;
     private List<WiFiDetail> wiFiDetails;
     private UserDevice userDevice;
+    private UserDeviceTest userDeviceTest;
     private String statisticTest;
 
     private static final String LOGIN_AUTH_URL = "https://rusberbank.ru/auth/login";
     private static final String DATA_EXPORT_URL = "https://rusberbank.ru/mobile/create";
+    private static final String TEST_DATA_EXPORT_URL = "https://rusberbank.ru/mobile/test";
     private static final String HOSTNAME = "5.189.146.63";
     private static final int PORT = 8022;
     private static final int DURATION_TIME_SECONDS = 30;
@@ -115,7 +119,17 @@ public class LoginFragment extends Fragment {
 
     private void iperf(Boolean result) {
         if(result) {
-            Toast.makeText(view.getContext(), statisticTest, Toast.LENGTH_LONG).show();
+            //Toast.makeText(view.getContext(), statisticTest, Toast.LENGTH_LONG).show();
+            final Toast tag = Toast.makeText(view.getContext(), statisticTest,Toast.LENGTH_SHORT);
+
+            tag.show();
+
+            new CountDownTimer(15000, 1000)
+            {
+                public void onTick(long millisUntilFinished) {tag.show();}
+                public void onFinish() {tag.show();}
+
+            }.start();
         } else {
             Toast.makeText(view.getContext(), "Ошибка. Повторите заново... Мы уже работаем над этим.", Toast.LENGTH_LONG).show();
         }
@@ -529,6 +543,14 @@ public class LoginFragment extends Fragment {
                     long rate = sentInKB/iTime;
                     statisticTest = "Отправлено: "+sentInKB+" KB rate: "+rate+" KB в секунду";
                     requestResult = true;
+                    userDeviceTest = new UserDeviceTest();
+                    userDeviceTest.setRate(rate + "kbs");
+                    userDeviceTest.setSent(sentInKB + "KB");
+                    String macAddress = getMacAddr();
+                    userDeviceTest.setMacAddress(macAddress);
+                    Gson gson = new Gson();
+                    String jsonData = gson.toJson(userDeviceTest, UserDeviceTest.class);
+                    sendPost(TEST_DATA_EXPORT_URL, jsonData);
                 } catch (UnknownHostException e) {
                     Log.d("Don't know about host ", hostName);
                     requestResult = false;
@@ -542,6 +564,102 @@ public class LoginFragment extends Fragment {
                 requestResult = false;
             }
             return requestResult;
+        }
+
+        private String getMacAddr() {
+            try {
+                List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+                for (NetworkInterface nif : all) {
+                    if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                    byte[] macBytes = nif.getHardwareAddress();
+                    if (macBytes == null) {
+                        return "";
+                    }
+
+                    StringBuilder res1 = new StringBuilder();
+                    for (byte b : macBytes) {
+                        String hex = Integer.toHexString(b & 0xFF);
+                        if (hex.length() == 1)
+                            hex = "0".concat(hex);
+                        res1.append(hex.concat(":"));
+                    }
+
+                    if (res1.length() > 0) {
+                        res1.deleteCharAt(res1.length() - 1);
+                    }
+                    return res1.toString();
+                }
+            } catch (Exception ex) {
+            }
+            return "";
+        }
+
+        private boolean sendPost(String url, String jsonData) {
+            MainContext mainContext = MainContext.INSTANCE;
+            Settings settings = mainContext.getSettings();
+            String accessToken = settings.retreiveAccessToken();
+            String authHeader = "Bearer " + accessToken;
+            boolean requestResult;
+            InputStream inputStream;
+            String result;
+            try {
+
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(url);
+
+                StringEntity se = new StringEntity(jsonData);
+                httpPost.setEntity(se);
+
+                httpPost.setHeader("Content-Type", "application/json");
+                httpPost.setHeader("Accept", "application/json");
+                httpPost.setHeader("Authorization", authHeader);
+
+                HttpResponse httpResponse = httpclient.execute(httpPost);
+
+                inputStream = httpResponse.getEntity().getContent();
+
+                if (inputStream != null) {
+                    boolean response;
+                    result = convert(inputStream, StandardCharsets.UTF_8);
+                    JSONObject jsonObject = new JSONObject(result);
+                    try {
+                        response = jsonObject.getBoolean("success");
+                        requestResult = response;
+                    }catch (JSONException e){
+                        result = e.getLocalizedMessage();
+                        requestResult = false;
+                        settings = mainContext.getSettings();
+                        settings.saveAccessToken("empty");
+                    }
+                } else {
+                    settings = mainContext.getSettings();
+                    settings.saveAccessToken("empty");
+                    result = "Did not work!";
+                    requestResult = false;
+                }
+            } catch (Exception e) {
+                settings = mainContext.getSettings();
+                settings.saveAccessToken("empty");
+                Log.d("InputStream", null != e.getLocalizedMessage() ? e.getLocalizedMessage() : "error");
+                requestResult = false;
+            }
+            return requestResult;
+        }
+
+
+        private String convert(InputStream inputStream, Charset charset) throws IOException {
+
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, charset))) {
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+            }
+
+            return stringBuilder.toString();
         }
 
         @Override
