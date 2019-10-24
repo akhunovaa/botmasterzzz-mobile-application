@@ -40,7 +40,7 @@ public class UserWiFiData {
     private boolean is80211mc;
 
     @SerializedName("created_time")
-    private Timestamp createdTime;
+    private Long createdTime;
 
     public String getSsid() {
         return ssid;
@@ -130,11 +130,11 @@ public class UserWiFiData {
         this.is80211mc = is80211mc;
     }
 
-    public Timestamp getCreatedTime() {
+    public Long getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
+    public void setCreatedTime(Long createdTime) {
         this.createdTime = createdTime;
     }
 
