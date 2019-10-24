@@ -39,9 +39,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.NetworkInterface;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.List;
 
 public class LoginFragment extends Fragment {
@@ -287,7 +288,7 @@ public class LoginFragment extends Fragment {
             WifiInfo wifiInf = wifiMan.getConnectionInfo();
             int ipAddress = wifiInf.getIpAddress();
             String ip = String.format("%d.%d.%d.%d", (ipAddress & 0xff),(ipAddress >> 8 & 0xff),(ipAddress >> 16 & 0xff),(ipAddress >> 24 & 0xff));
-            String macAddress = wifiInf.getMacAddress();
+            String macAddress = getMacAddr();
             userDevice = new UserDevice();
             userDevice.setModelName(deviceName);
             userDevice.setOsVersion(androidVersion);
@@ -325,6 +326,35 @@ public class LoginFragment extends Fragment {
             } else {
                 return capitalize(manufacturer) + " " + model;
             }
+        }
+
+        private String getMacAddr() {
+            try {
+                List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+                for (NetworkInterface nif : all) {
+                    if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                    byte[] macBytes = nif.getHardwareAddress();
+                    if (macBytes == null) {
+                        return "";
+                    }
+
+                    StringBuilder res1 = new StringBuilder();
+                    for (byte b : macBytes) {
+                        String hex = Integer.toHexString(b & 0xFF);
+                        if (hex.length() == 1)
+                            hex = "0".concat(hex);
+                        res1.append(hex.concat(":"));
+                    }
+
+                    if (res1.length() > 0) {
+                        res1.deleteCharAt(res1.length() - 1);
+                    }
+                    return res1.toString();
+                }
+            } catch (Exception ex) {
+            }
+            return "";
         }
 
 
