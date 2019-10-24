@@ -171,6 +171,7 @@
     <string name="link"><a href="https://rusberbank.ru/signup">Нет аккаунта? Зарегистрироваться!</a></string>
     <string name="login_attention_text">"Уже зарегистрированы? Авторизоваться!"</string>
     <string name="login_text">"Логин"</string>
+    <string name="iperf_time">"Время тестирования в секундах (от 0 до 100)"</string>
 
     <string name="auth0_domain">"https://rusberbank.ru/signup"</string>
     <string name="data_export">"Экспортировать"</string>

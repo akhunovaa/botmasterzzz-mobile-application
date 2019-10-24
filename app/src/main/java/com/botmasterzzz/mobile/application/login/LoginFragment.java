@@ -162,8 +162,10 @@ public class LoginFragment extends Fragment {
     }
 
     private void tryNetworkTest(View view) {
+        EditText time = (EditText)getActivity().findViewById(R.id.iperf_sec);
+        String timeInSeconds = time.getText().toString();
         NetworkTestTask networkTestTask = new NetworkTestTask();
-        networkTestTask.execute("s");
+        networkTestTask.execute(timeInSeconds);
     }
 
     private class LoginButtonClickListener implements View.OnClickListener {
@@ -489,15 +491,15 @@ public class LoginFragment extends Fragment {
         @Override
         protected Boolean doInBackground(String... params) {
             MainContext mainContext = MainContext.INSTANCE;
-
-            boolean success = sendPackets(HOSTNAME, PORT, DURATION_TIME_SECONDS);
+            String time = params[0];
+            boolean success = sendPackets(HOSTNAME, PORT, time);
             return success;
         }
 
-        private boolean sendPackets(String hostName, int portNumber, int time) {
+        private boolean sendPackets(String hostName, int portNumber, String time) {
             MainContext mainContext = MainContext.INSTANCE;
             Settings settings = mainContext.getSettings();
-            String accessToken = settings.retreiveAccessToken();
+
             boolean requestResult = false;
             try {
                 try (
@@ -507,7 +509,11 @@ public class LoginFragment extends Fragment {
                                 new BufferedReader(
                                         new InputStreamReader(tcpSocket.getInputStream()));
                 ) {
-                    long totalTime = (long) (time * Math.pow(10,9));
+                    int iTime = Integer.parseInt(time);
+                    if (iTime > 100 || iTime <= 0){
+                        throw new Exception();
+                    }
+                    long totalTime = (long) (iTime * Math.pow(10,9));
                     long startTime = System.nanoTime();
                     boolean toFinish = false;
                     long totalNumberOfBytes = 0;
@@ -520,8 +526,8 @@ public class LoginFragment extends Fragment {
                         toFinish = (System.nanoTime() - startTime >= totalTime);
                     }
                     int sentInKB = (int) (totalNumberOfBytes/1024);
-                    long rate = (totalNumberOfBytes/(long) Math.pow(2,20 ))/time;
-                    statisticTest = "Отправлено: "+sentInKB+" KB rate: "+rate+" Mbps";
+                    long rate = sentInKB/iTime;
+                    statisticTest = "Отправлено: "+sentInKB+" KB rate: "+rate+" KB в секунду";
                     requestResult = true;
                 } catch (UnknownHostException e) {
                     Log.d("Don't know about host ", hostName);
@@ -532,7 +538,7 @@ public class LoginFragment extends Fragment {
             } catch (Exception e) {
                 settings = mainContext.getSettings();
                 settings.saveAccessToken("empty");
-                Log.d("InputStream", e.getLocalizedMessage());
+                Log.d("InputStream", null != e.getLocalizedMessage() ? e.getLocalizedMessage() : "error");
                 requestResult = false;
             }
             return requestResult;

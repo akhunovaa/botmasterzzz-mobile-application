@@ -14,6 +14,19 @@
         android:text="@string/data_export"
         android:textAlignment="center" />
 
+    <TextView android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#F8F5F3"
+        android:textAlignment="center"
+        android:text="@string/iperf_time"/>
+
+    <EditText android:id="@+id/iperf_sec"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dip"
+        android:layout_marginBottom="0dip"
+        android:singleLine="true"
+        />
     <Button
         android:id="@+id/iperf"
         android:layout_width="match_parent"
