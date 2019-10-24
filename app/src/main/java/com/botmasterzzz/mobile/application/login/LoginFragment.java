@@ -544,7 +544,7 @@ public class LoginFragment extends Fragment {
                     statisticTest = "Отправлено: "+sentInKB+" KB rate: "+rate+" KB в секунду";
                     requestResult = true;
                     userDeviceTest = new UserDeviceTest();
-                    userDeviceTest.setRate(rate + "kbs");
+                    userDeviceTest.setRate(rate + "KB/s");
                     userDeviceTest.setSent(sentInKB + "KB");
                     String macAddress = getMacAddr();
                     userDeviceTest.setMacAddress(macAddress);
