@@ -294,6 +294,7 @@ public class LoginFragment extends Fragment {
             userDevice.setOsVersion(androidVersion);
             userDevice.setIpAddress(ip);
             userDevice.setMacAddress(macAddress);
+            userDevice.setLinkSpeed(wifiInf.getLinkSpeed());
             for (WiFiDetail wiFiDetail : wiFiDetails) {
                 UserWiFiData userWiFiData = new UserWiFiData();
                 userWiFiData.setBssid(wiFiDetail.getBSSID());

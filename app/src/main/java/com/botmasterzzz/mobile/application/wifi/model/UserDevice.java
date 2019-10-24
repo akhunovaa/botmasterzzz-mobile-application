@@ -19,6 +19,9 @@ public class UserDevice {
     @SerializedName("ip_address")
     private String ipAddress;
 
+    @SerializedName("link_speed")
+    private int linkSpeed;
+
     @SerializedName("wifi_data")
     private List<UserWiFiData> userWiFiDataList;
 
@@ -69,14 +72,11 @@ public class UserDevice {
         this.userWiFiDataList = userWiFiDataList;
     }
 
-    @Override
-    public String toString() {
-        return "UserDevice{" +
-                "modelName='" + modelName + '\'' +
-                ", osVersion='" + osVersion + '\'' +
-                ", macAddress='" + macAddress + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
-                ", userWiFiDataList=" + userWiFiDataList +
-                '}';
+    public int getLinkSpeed() {
+        return linkSpeed;
+    }
+
+    public void setLinkSpeed(int linkSpeed) {
+        this.linkSpeed = linkSpeed;
     }
 }
