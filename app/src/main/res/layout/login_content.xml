@@ -10,8 +10,15 @@
     <Button
         android:id="@+id/button_export"
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="60dp"
         android:text="@string/data_export"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/iperf"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="@string/iperf"
         android:textAlignment="center" />
 
     <Button
