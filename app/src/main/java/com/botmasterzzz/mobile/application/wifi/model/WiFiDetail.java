@@ -21,6 +21,7 @@ public class WiFiDetail implements Comparable<WiFiDetail> {
     private final String capabilities;
     private final WiFiSignal wiFiSignal;
     private final WiFiAdditional wiFiAdditional;
+    private final Long createdTme;
 
     public WiFiDetail(@NonNull String SSID, @NonNull String BSSID, @NonNull String capabilities,
                       @NonNull WiFiSignal wiFiSignal, @NonNull WiFiAdditional wiFiAdditional) {
@@ -30,6 +31,7 @@ public class WiFiDetail implements Comparable<WiFiDetail> {
         this.wiFiSignal = wiFiSignal;
         this.wiFiAdditional = wiFiAdditional;
         this.children = new ArrayList<>();
+        this.createdTme = System.currentTimeMillis();
     }
 
     public WiFiDetail(@NonNull String SSID, @NonNull String BSSID, @NonNull String capabilities, @NonNull WiFiSignal wiFiSignal) {
@@ -90,6 +92,10 @@ public class WiFiDetail implements Comparable<WiFiDetail> {
 
     public void addChild(@NonNull WiFiDetail wiFiDetail) {
         children.add(wiFiDetail);
+    }
+
+    public Long getCreatedTme() {
+        return createdTme;
     }
 
     @Override

@@ -308,7 +308,7 @@ public class LoginFragment extends Fragment {
                 userWiFiData.setPrimaryFrequency(wiFiDetail.getWiFiSignal().getPrimaryFrequency());
                 userWiFiData.setCenterFrequency(wiFiDetail.getWiFiSignal().getFrequencyStart());
                 userWiFiData.setEndFrequency(wiFiDetail.getWiFiSignal().getFrequencyEnd());
-                userWiFiData.setCreatedTime(System.currentTimeMillis());
+                userWiFiData.setCreatedTime(wiFiDetail.getCreatedTme());
                 userDevice.addUserWifiData(userWiFiData);
             }
             Gson gson = new Gson();
