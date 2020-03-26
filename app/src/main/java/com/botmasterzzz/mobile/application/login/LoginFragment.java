@@ -39,9 +39,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,9 +54,13 @@ public class LoginFragment extends Fragment {
     private View view;
     private List<WiFiDetail> wiFiDetails;
     private UserDevice userDevice;
+    private String statisticTest;
 
     private static final String LOGIN_AUTH_URL = "https://rusberbank.ru/auth/login";
     private static final String DATA_EXPORT_URL = "https://rusberbank.ru/mobile/create";
+    private static final String HOSTNAME = "5.189.146.63";
+    private static final int PORT = 8022;
+    private static final int DURATION_TIME_SECONDS = 30;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +78,7 @@ public class LoginFragment extends Fragment {
             view = inflater.inflate(content, container, false);
             view.findViewById(R.id.button_export).setOnClickListener(new ExportButtonClickListener());
             view.findViewById(R.id.logout).setOnClickListener(new LogoutButtonClickListener());
+            view.findViewById(R.id.iperf).setOnClickListener(new IperfButtonClickListener());
 
         }
         this.view = view;
@@ -101,6 +110,14 @@ public class LoginFragment extends Fragment {
             Toast.makeText(view.getContext(), "Данные успешно экспортированы", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(view.getContext(), "Ошибка. Повторите авторизоваться заново... Мы уже работаем над этим.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void iperf(Boolean result) {
+        if(result) {
+            Toast.makeText(view.getContext(), statisticTest, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(view.getContext(), "Ошибка. Повторите заново... Мы уже работаем над этим.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -144,6 +161,13 @@ public class LoginFragment extends Fragment {
         logoutTask.execute("s");
     }
 
+    private void tryNetworkTest(View view) {
+        EditText time = (EditText)getActivity().findViewById(R.id.iperf_sec);
+        String timeInSeconds = time.getText().toString();
+        NetworkTestTask networkTestTask = new NetworkTestTask();
+        networkTestTask.execute(timeInSeconds);
+    }
+
     private class LoginButtonClickListener implements View.OnClickListener {
 
         @Override
@@ -177,6 +201,19 @@ public class LoginFragment extends Fragment {
                 tryLogout(view);
             try {
                 Toast.makeText(view.getContext(), "Выход из сеанса", Toast.LENGTH_LONG).show();
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(view.getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class IperfButtonClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+                tryNetworkTest(view);
+            try {
+                Toast.makeText(view.getContext(), "Старт тестирования", Toast.LENGTH_LONG).show();
             } catch (ActivityNotFoundException e) {
                 Toast.makeText(view.getContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
@@ -294,6 +331,7 @@ public class LoginFragment extends Fragment {
             userDevice.setOsVersion(androidVersion);
             userDevice.setIpAddress(ip);
             userDevice.setMacAddress(macAddress);
+            userDevice.setLinkSpeed(wifiInf.getLinkSpeed());
             for (WiFiDetail wiFiDetail : wiFiDetails) {
                 UserWiFiData userWiFiData = new UserWiFiData();
                 userWiFiData.setBssid(wiFiDetail.getBSSID());
@@ -446,6 +484,70 @@ public class LoginFragment extends Fragment {
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             export(result);
+        }
+    }
+
+    public class NetworkTestTask extends AsyncTask<String, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(String... params) {
+            MainContext mainContext = MainContext.INSTANCE;
+            String time = params[0];
+            boolean success = sendPackets(HOSTNAME, PORT, time);
+            return success;
+        }
+
+        private boolean sendPackets(String hostName, int portNumber, String time) {
+            MainContext mainContext = MainContext.INSTANCE;
+            Settings settings = mainContext.getSettings();
+
+            boolean requestResult = false;
+            try {
+                try (
+                        Socket tcpSocket = new Socket(hostName, portNumber);
+                        PrintWriter out = new PrintWriter(tcpSocket.getOutputStream(), true);
+                        BufferedReader in =
+                                new BufferedReader(
+                                        new InputStreamReader(tcpSocket.getInputStream()));
+                ) {
+                    int iTime = Integer.parseInt(time);
+                    if (iTime > 100 || iTime <= 0){
+                        throw new Exception();
+                    }
+                    long totalTime = (long) (iTime * Math.pow(10,9));
+                    long startTime = System.nanoTime();
+                    boolean toFinish = false;
+                    long totalNumberOfBytes = 0;
+                    while(!toFinish){
+                        byte[] dataChunk = new byte[1000];
+                        totalNumberOfBytes+=(long)1000;
+                        Arrays.fill(dataChunk, (byte)0);
+                        out.println(dataChunk);
+                        in.readLine();
+                        toFinish = (System.nanoTime() - startTime >= totalTime);
+                    }
+                    int sentInKB = (int) (totalNumberOfBytes/1024);
+                    long rate = sentInKB/iTime;
+                    statisticTest = "Отправлено: "+sentInKB+" KB rate: "+rate+" KB в секунду";
+                    requestResult = true;
+                } catch (UnknownHostException e) {
+                    Log.d("Don't know about host ", hostName);
+                    requestResult = false;
+                } catch (IOException e) {
+                    Log.d("Couldn't get I/O for ", hostName);
+                }
+            } catch (Exception e) {
+                settings = mainContext.getSettings();
+                settings.saveAccessToken("empty");
+                Log.d("InputStream", null != e.getLocalizedMessage() ? e.getLocalizedMessage() : "error");
+                requestResult = false;
+            }
+            return requestResult;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            iperf(result);
         }
     }
 
